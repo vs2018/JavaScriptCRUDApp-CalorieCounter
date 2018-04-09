@@ -60,6 +60,9 @@ const ItemCtrl = (function(){
       data.items.splice(index, 1)
 
     },
+    clearAllItems: function(){
+      data.items = []
+    },
     setCurrentItem: function(item){
       data.currentItem = item
     },
@@ -216,6 +219,16 @@ const UICtrl = (function(){
     showTotalCalories: function(total){
       document.querySelector(UISelectors.totalCalories).textContent = total
     },
+    removeItems: function(){
+      let listItems = document.querySelectorAll(UISelectors.listItems)
+
+      // Turn Node list into array 
+      listItems = Array.from(listItems)
+
+      listItems.forEach(function(item){
+        item.remove()
+      })
+    }, 
     clearEditState: function(){
       UICtrl.clearInput()
       document.querySelector(UISelectors.updateBtn).style.display = 'none'
@@ -395,6 +408,24 @@ const App = (function(ItemCtrl, UICtrl){
   const clearAllItemsClick = function(){
     // Delete all items from data structure
     ItemCtrl.clearAllItems()
+
+     // Get total calories
+
+     const totalCalories = ItemCtrl.getTotalCalories()
+
+     // Add total calories to UI
+     UICtrl.showTotalCalories(totalCalories)
+
+    // Remove from UI
+    UICtrl.removeItems()
+
+    // Hide UL
+
+    UICtrl.hideList()
+
+    
+
+
   }
 
   // Public methods
